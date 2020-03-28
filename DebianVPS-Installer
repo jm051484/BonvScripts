@@ -605,8 +605,7 @@ cat <<EOF15> /var/www/openvpn/GTMConfig.ovpn
 client
 dev tun
 proto tcp
-remote $IPADDR:$OpenVPN_TCP_Port@www.googleapis.com
-port 110
+remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 resolv-retry infinite
 connect-retry infinite
@@ -797,7 +796,8 @@ EOFSH
  rm -rf /etc/sysctl.d/99*
 
  # Setting our startup script to run every machine boots 
- echo "[Unit]
+ cat <<'BonvS' > /etc/systemd/system/bonveio.service
+[Unit]
 Description=Bonveio Startup Script
 Before=network-online.target
 Wants=network-online.target
@@ -808,7 +808,8 @@ ExecStart=/bin/bash /etc/bonveio/startup.sh
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/bonveio.service
+WantedBy=multi-user.target
+BonvS
  chmod +x /etc/systemd/system/bonveio.service
  systemctl daemon-reload
  systemctl start bonveio
