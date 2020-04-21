@@ -544,7 +544,8 @@ comp-lzo
 setenv CLIENT_CERT 0
 reneg-sec 0
 verb 3
-http-proxy $IPADDR $Squid_Port1
+#http-proxy $IPADDR $Squid_Port1
+http-proxy $IPADDR $Privoxy_Port1
 http-proxy-option VERSION 1.1
 http-proxy-option CUSTOM-HEADER Host www.googleapis.com
 http-proxy-option CUSTOM-HEADER X-Forwarded-For www.googleapis.com
@@ -576,7 +577,8 @@ comp-lzo
 setenv CLIENT_CERT 0
 reneg-sec 0
 verb 3
-http-proxy $IPADDR $Squid_Port1
+#http-proxy $IPADDR $Squid_Port1
+http-proxy $IPADDR $Privoxy_Port1
 http-proxy-option CUSTOM-HEADER Host www.viber.com.edgekey.net
 http-proxy-option CUSTOM-HEADER X-Online-Host www.viber.com.edgekey.net
 http-proxy-option CUSTOM-HEADER X-Forwarded-For www.viber.com.edgekey.net
@@ -646,6 +648,7 @@ reneg-sec 0
 verb 0
 nice -20
 log /dev/null
+
 <ca>
 $(cat /etc/openvpn/ca.crt)
 </ca>
