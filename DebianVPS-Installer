@@ -387,7 +387,7 @@ done
  sed -i "s|MyOvpnPort|$OpenVPN_UDP_Port|g" /etc/openvpn/server_udp.conf 
  
  # Getting some OpenVPN plugins for unix authentication
- wget -qO /etc/openvpn/b.zip 'https://raw.githubusercontent.com/jm051484/deb9-10vpsinst./master/openvpn_plugin64'
+ wget -qO /etc/openvpn/b.zip 'https://raw.githubusercontent.com/jm051484/jm051484script/master/openvpn_plugin64'
  unzip -qq /etc/openvpn/b.zip -d /etc/openvpn
  rm -f /etc/openvpn/b.zip
  
@@ -427,7 +427,7 @@ EOFipt
  systemctl enable openvpn@server_udp
  
  # Pulling OpenVPN no internet fixer script
- wget -qO /etc/openvpn/openvpn.bash "https://raw.githubusercontent.com/jm051484/deb9-10vpsinst./master/openvpn.bash"
+ wget -qO /etc/openvpn/openvpn.bash "https://raw.githubusercontent.com/jm051484/jm051484script/master/openvpn.bash"
  chmod +x /etc/openvpn/openvpn.bash
 }
 
@@ -760,7 +760,7 @@ echo -e " Creating Menu scripts.."
 
 cd /usr/local/sbin/
 rm -rf {accounts,base-ports,base-ports-wc,base-script,bench-network,clearcache,connections,create,create_random,create_trial,delete_expired,diagnose,edit_dropbear,edit_openssh,edit_openvpn,edit_ports,edit_squid3,edit_stunnel4,locked_list,menu,options,ram,reboot_sys,reboot_sys_auto,restart_services,server,set_multilogin_autokill,set_multilogin_autokill_lib,show_ports,speedtest,user_delete,user_details,user_details_lib,user_extend,user_list,user_lock,user_unlock}
-wget -q 'https://raw.githubusercontent.com/jm051484/deb9-10vpsinst./master/menu.zip'
+wget -q 'https://raw.githubusercontent.com/jm051484/jm051484script/master/menu.zip'
 unzip -qq menu.zip
 rm -f menu.zip
 chmod +x ./*
@@ -849,7 +849,7 @@ fi
  ConfStartup
 
  ## DNS maker plugin for SUN users(for vps script usage only)
- wget -qO dnsmaker "https://raw.githubusercontent.com/jm051484/deb9-10vpsinst./master/DNSMaster/debian"
+ wget -qO dnsmaker "https://raw.githubusercontent.com/jm051484/jm051484script/master/DNSMaster/debian"
  chmod +x dnsmaker
  ./dnsmaker
  rm -rf dnsmaker
