@@ -363,7 +363,7 @@ myOpenVPNconf2
 done
 
  # Creating a New update message in server.conf
- cat <<'NUovpn' > /etc/openvpn/server.conf
+ # cat <<'NUovpn' > /etc/openvpn/server.conf
  # New Update are now released, OpenVPN Server
  # are now running both TCP and UDP Protocol. (Both are only running on IPv4)
  # But our native server.conf are now removed and divided
@@ -383,7 +383,7 @@ done
  # executed/raised from this script (OpenVPN_TCP_Port/OpenVPN_UDP_Port)
  #
  # Enjoy the new update
- NUovpn
+ # NUovpn
 
  # setting openvpn server port
  sed -i "s|MyOvpnPort|$OpenVPN_TCP_Port|g" /etc/openvpn/server_tcp.conf
