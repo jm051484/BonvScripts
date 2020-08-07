@@ -750,7 +750,7 @@ wget https://raw.githubusercontent.com/jm051484/Deb83in1Autoscript/master/ddos-d
 unzip ddos-deflate-master.zip
 cd ddos-deflate-master
 ./install.sh
-rm -rf /root/ddos-deflate-master.zip
+rm -f ddos-deflate-master.zip
 
  # Rebooting cron service
  systemctl restart cron
