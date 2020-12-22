@@ -43,6 +43,7 @@ MyVPS_Time='Asia/Manila'
 ## WARNING: Do not modify or edit anything
 ## if you did'nt know what to do.
 ## This part is too sensitive.
+}
 
 function InstUpdates(){
 export DEBIAN_FRONTEND=noninteractive
