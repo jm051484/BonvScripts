@@ -23,8 +23,8 @@ Stunnel_Port1='442' # through Dropbear
 Stunnel_Port2='441' # through OpenSSH
 
 # OpenVPN Ports
-OpenVPN_TCP_Port='1194' # take note when you change this port, openvpn sun noload config will not work
-OpenVPN_UDP_Port='440'
+OpenVPN_TCP_Port='440' # take note when you change this port, openvpn sun noload config will not work
+OpenVPN_UDP_Port='1194'
 
 # Privoxy Ports
 Privoxy_Port1='8000'
@@ -427,7 +427,7 @@ echo "Installing socksproxy."
 loc=/etc/socksproxy
 mkdir $loc 2> /dev/null
 wget -qO $loc/proxy.py https://git.io/JLKlM
-wget -qO $loc/server.conf https://git.io/JLKlp
+wget -qO $loc/server.conf https://git.io/JLK2q
 
 cat << service > /etc/systemd/system/iptab.service
 [Unit]
@@ -539,7 +539,7 @@ dport = 22
 [OpenVPN]
 timer = 55
 sport = 8890
-dport = 1194
+dport = 440
 ovpn
 
 # Restart socksproxy
