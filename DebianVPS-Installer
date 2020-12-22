@@ -1017,7 +1017,7 @@ echo -e " OpenVPN TCP: $OpenVPN_TCP_Port"
 echo -e " OpenVPN UDP: $OpenVPN_UDP_Port"
 echo -e " NGiNX: $OvpnDownload_Port"
 echo -e " Webmin: 10000"
-echo -e " socksproxy: 8888 (55s timer), 8889 (No timer)
+echo -e " socksproxy: 8888 (55s timer), 8889 (No timer), 8890 (55s timer) (openvpn)
 echo -e " Log output: /root/socksproxylog.txt |
 echo -e ""
 echo -e ""
