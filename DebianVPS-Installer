@@ -19,8 +19,8 @@ Dropbear_Port1='143'
 Dropbear_Port2='3128'
 
 # Stunnel Ports
-Stunnel_Port1='442' # through Dropbear
-Stunnel_Port2='441' # through OpenSSH
+#Stunnel_Port1='442' # through Dropbear
+#Stunnel_Port2='441' # through OpenSSH
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='440' # take note when you change this port, openvpn sun noload config will not work
@@ -30,7 +30,7 @@ OpenVPN_UDP_Port='1194'
 Privoxy_Port1='8000'
 
 # Squid Ports
-Squid_Port1='8080'
+#Squid_Port1='8080'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='86' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
@@ -177,51 +177,51 @@ function InsStunnel(){
 StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
 
 # Creating stunnel startup config using cat eof tricks
-cat <<'MyStunnelD' > /etc/default/$StunnelDir
+#cat <<'MyStunnelD' > /etc/default/$StunnelDir
 # My Stunnel Config
-ENABLED=1
-FILES="/etc/stunnel/*.conf"
-OPTIONS=""
-BANNER="/etc/banner"
-PPP_RESTART=0
+#ENABLED=1
+#FILES="/etc/stunnel/*.conf"
+#OPTIONS=""
+#BANNER="/etc/banner"
+#PPP_RESTART=0
 # RLIMITS="-n 4096 -d unlimited"
-RLIMITS=""
-MyStunnelD
+#RLIMITS=""
+#MyStunnelD
 
 # Removing all stunnel folder contents
-rm -rf /etc/stunnel/*
+#rm -rf /etc/stunnel/*
 
 # Creating stunnel certifcate using openssl
-openssl req -new -x509 -days 9999 -nodes -subj "/C=PH/ST=Camarines/L=Camarines/O=$MyScriptName/OU=$MyScriptName/CN=$MyScriptName" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem &> /dev/null
-##  > /dev/null 2>&1
+#openssl req -new -x509 -days 9999 -nodes -subj "/C=PH/ST=Camarines/L=Camarines/O=$MyScriptName/OU=$MyScriptName/CN=$MyScriptName" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem &> /dev/null
+#  > /dev/null 2>&1
 
 # Creating stunnel server config
-cat <<'MyStunnelC' > /etc/stunnel/stunnel.conf
+#cat <<'MyStunnelC' > /etc/stunnel/stunnel.conf
 # My Stunnel Config
-pid = /var/run/stunnel.pid
-cert = /etc/stunnel/stunnel.pem
-client = no
-socket = l:TCP_NODELAY=1
-socket = r:TCP_NODELAY=1
-TIMEOUTclose = 0
+#pid = /var/run/stunnel.pid
+#cert = /etc/stunnel/stunnel.pem
+#client = no
+#socket = l:TCP_NODELAY=1
+#socket = r:TCP_NODELAY=1
+#TIMEOUTclose = 0
 
-[dropbear]
-accept = Stunnel_Port1
-connect = 127.0.0.1:dropbear_port_c
+#[dropbear]
+#accept = Stunnel_Port1
+#connect = 127.0.0.1:dropbear_port_c
 
-[openssh]
-accept = Stunnel_Port2
-connect = 127.0.0.1:openssh_port_c
-MyStunnelC
+#[openssh]
+#accept = Stunnel_Port2
+#connect = 127.0.0.1:openssh_port_c
+#MyStunnelC
 
 # setting stunnel ports
-sed -i "s|Stunnel_Port1|$Stunnel_Port1|g" /etc/stunnel/stunnel.conf
-sed -i "s|dropbear_port_c|$(netstat -tlnp | grep -i dropbear | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
-sed -i "s|Stunnel_Port2|$Stunnel_Port2|g" /etc/stunnel/stunnel.conf
-sed -i "s|openssh_port_c|$(netstat -tlnp | grep -i ssh | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
+#sed -i "s|Stunnel_Port1|$Stunnel_Port1|g" /etc/stunnel/stunnel.conf
+#sed -i "s|dropbear_port_c|$(netstat -tlnp | grep -i dropbear | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
+#sed -i "s|Stunnel_Port2|$Stunnel_Port2|g" /etc/stunnel/stunnel.conf
+#sed -i "s|openssh_port_c|$(netstat -tlnp | grep -i ssh | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
 
 # Restarting stunnel service
-systemctl restart $StunnelDir
+#systemctl restart $StunnelDir
 }
 
 function InsOpenVPN(){
@@ -280,37 +280,52 @@ ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
 dh /etc/openvpn/dh.pem
-duplicate-cn
+#duplicate-cn
 cipher none
+tls-cipher TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256
 ncp-disable
 auth none
-comp-lzo
+#comp-lzo
 plugin /etc/openvpn/openvpn-auth-pam.so login
 verify-client-cert none
 username-as-common-name
-max-clients 4000
+#max-clients 4000
+topology subnet
 server 10.200.0.0 255.255.0.0
-tun-mtu 1500
-mssfix 1460
-reneg-sec 0
-sndbuf 393216
-rcvbuf 393216
-push "sndbuf 393216"
-push "rcvbuf 393216"
-push "redirect-gateway def1"
-push "route-method exe"
-push "route-delay 2"
-client-to-client
-keepalive 10 120
+ifconfig-pool-persist ipp.save
+#tun-mtu 1500
+#mssfix 1460
+#reneg-sec 0
+#sndbuf 393216
+#rcvbuf 393216
+auth-user-pass-verify script/login.sh via-env
+script-security 3
+client-connect script/connect.sh
+client-disconnect script/disconnect.sh
+#push "sndbuf 393216"
+#push "rcvbuf 393216"
+#push "redirect-gateway def1"
+#push "route-method exe"
+#push "route-delay 2"
+push "verb 3"
+push "redirect-gateway def1 bypass-dhcp"
+push "route 0.0.0.0 255.255.255.255 net_gateway"
+push "block-outside-dns"
+push "register-dns"
+push "dhcp-option DNS 1.1.1.2"
+push "dhcp-option DNS 1.0.0.2"
+#client-to-client
+#keepalive 10 120
+keepalive 5 60
 persist-tun
 persist-key
-persist-remote-ip
+#persist-remote-ip
 status /etc/openvpn/tcp_stats.log
 log /etc/openvpn/tcp.log
 verb 3
-script-security 2
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
+#script-security 2
+#socket-flags TCP_NODELAY
+#push "socket-flags TCP_NODELAY"
 myOpenVPNconf
 
 cat <<'myOpenVPNconf2' > /etc/openvpn/server_udp.conf
@@ -322,39 +337,52 @@ ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
 dh /etc/openvpn/dh.pem
-duplicate-cn
+#duplicate-cn
 cipher none
+tls-cipher TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256
 ncp-disable
 auth none
-comp-lzo
+#comp-lzo
 plugin /etc/openvpn/openvpn-auth-pam.so login
 verify-client-cert none
 username-as-common-name
-max-clients 4000
+#max-clients 4000
+topology subnet
 server 10.201.0.0 255.255.0.0
-tun-mtu 1500
-mssfix 1460
-reneg-sec 0
-sndbuf 393216
-rcvbuf 393216
-push "sndbuf 393216"
-push "rcvbuf 393216"
-push "redirect-gateway def1"
-push "route-method exe"
-push "route-delay 2"
-client-to-client
-keepalive 10 120
+ifconfig-pool-persist ipp.save
+#tun-mtu 1500
+#mssfix 1460
+#reneg-sec 0
+#sndbuf 393216
+#rcvbuf 393216
+auth-user-pass-verify script/login.sh via-env
+script-security 3
+client-connect script/connect.sh
+client-disconnect script/disconnect.sh
+#push "sndbuf 393216"
+#push "rcvbuf 393216"
+#push "redirect-gateway def1"
+#push "route-method exe"
+#push "route-delay 2"
+push "verb 3"
+push "redirect-gateway def1 bypass-dhcp"
+push "route 0.0.0.0 255.255.255.255 net_gateway"
+push "block-outside-dns"
+push "register-dns"
+push "dhcp-option DNS 1.1.1.2"
+push "dhcp-option DNS 1.0.0.2"
+#client-to-client
+#keepalive 10 120
+keepalive 5 60
 persist-tun
 persist-key
-persist-remote-ip
-status /etc/openvpn/udp_stats.log
-log /etc/openvpn/udp.log
+#persist-remote-ip
+status /etc/openvpn/tcp_stats.log
+log /etc/openvpn/tcp.log
 verb 3
-script-security 2
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+#script-security 2
+#socket-flags TCP_NODELAY
+#push "socket-flags TCP_NODELAY"
 myOpenVPNconf2
 
 # Getting all dns inside resolv.conf then use as Default DNS for our openvpn server
@@ -600,32 +628,32 @@ sed -i "s|Privoxy_Port1|$Privoxy_Port1|g" /etc/privoxy/config
 rm -rf /etc/squid/squid.conf*
 
 # Creating Squid server config using cat eof tricks
-cat <<'mySquid' > /etc/squid/squid.conf
+#cat <<'mySquid' > /etc/squid/squid.conf
 # My Squid Proxy Server Config
-acl VPN dst IP-ADDRESS/32
-http_access allow VPN
-http_access deny all 
-http_port Squid_Port1
-coredump_dir /var/spool/squid
-dns_nameservers 8.8.8.8 8.8.4.4
-refresh_pattern ^ftp: 1440 20% 10080
-refresh_pattern ^gopher: 1440 0% 1440
-refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
-refresh_pattern . 0 20% 4320
-visible_hostname MyScriptName
-mySquid
+#acl VPN dst IP-ADDRESS/32
+#http_access allow VPN
+#http_access deny all 
+#http_port Squid_Port1
+#coredump_dir /var/spool/squid
+#dns_nameservers 8.8.8.8 8.8.4.4
+#refresh_pattern ^ftp: 1440 20% 10080
+#refresh_pattern ^gopher: 1440 0% 1440
+#refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
+#refresh_pattern . 0 20% 4320
+#visible_hostname MyScriptName
+#mySquid
 
 # Setting machine's IP Address inside of our squid config(security that only allows this machine to use this proxy server)
-sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
+#sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
 
 # Setting squid ports
-sed -i "s|Squid_Port1|$Squid_Port1|g" /etc/squid/squid.conf
-sed -i "s|MyScriptName|$MyScriptName|g" /etc/squid/squid.conf
+#sed -i "s|Squid_Port1|$Squid_Port1|g" /etc/squid/squid.conf
+#sed -i "s|MyScriptName|$MyScriptName|g" /etc/squid/squid.conf
 
 # Starting Proxy server
 echo -e "Restarting proxy server.."
 systemctl restart privoxy
-systemctl restart squid
+#systemctl restart squid
 }
 
 function OvpnConfigs(){
